@@ -18,8 +18,18 @@ app.use(router).use(ElementPlus).use(store).use(globalRegister);
 
 app.mount("#app");
 
-// myRequest.request({
-//     url: "maimaidxprober/music_data",
-//     method: "GET"
-// });
-myRequest.get("maimaidxprober/music_data");
+myRequest.request({
+    url: "maimaidxprober/music_data",
+    method: "GET",
+    interceptors: {
+        requestInterceptor: (config) => {
+            console.log("单独的请求拦截器");
+            return config;
+        },
+        responseInterceptor: (res) => {
+            console.log("单独的响应拦截器");
+            return res;
+        }
+    }
+});
+// myRequest.get("maimaidxprober/music_data");

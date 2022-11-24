@@ -29,14 +29,20 @@ class LinRequest {
             return config;
         });
         // 全局响应拦截器
-        this.instance?.interceptors.response.use((err) => {
+        this.instance?.interceptors.response.use((res) => {
             console.log("全局响应拦截器");
-            return err;
+            return res;
         });
     }
 
     request(config: LinRequestConfig) {
+        if (config.interceptors?.requestInterceptor) {
+            config = config.interceptors.requestInterceptor(config);
+        }
         this.instance.request(config).then((res) => {
+            if (config.interceptors?.responseInterceptor) {
+                res = config.interceptors.responseInterceptor(res);
+            }
             console.log(res);
         });
     }
