@@ -3,6 +3,8 @@ import type { AxiosInstance } from "axios";
 import type { LinRequestInterceptor, LinRequestConfig } from "@/service/requests/types";
 import { ElLoading } from "element-plus";
 import { LoadingInstance } from "element-plus/es/components/loading/src/loading";
+
+const DEFAULT_LOADING = true;
 class LinRequest {
     // 多个request对象时创建多个实例并保留
     instance: AxiosInstance;
@@ -17,7 +19,7 @@ class LinRequest {
         // 保留拦截器
         this.interceptors = config.interceptors;
         // 是否显示loading
-        this.showLoading = config?.showLoading ?? true;
+        this.showLoading = config?.showLoading ?? DEFAULT_LOADING;
         // 实例请求拦截器 ?可链式选
         this.instance.interceptors.request.use(
             this.interceptors?.requestInterceptor,
@@ -32,8 +34,6 @@ class LinRequest {
         // 所有实例的请求拦截器
         this.instance.interceptors.request.use(
             (config) => {
-                console.log("所有实例的请求拦截器:请求成功");
-                console.log(" this.showLoading", this.showLoading);
                 if (this.showLoading) {
                     this.loading = ElLoading.service({
                         lock: true,
@@ -45,14 +45,12 @@ class LinRequest {
                 return config;
             },
             (err) => {
-                console.log("所有实例的请求拦截器:请求失败");
                 return err;
             }
         );
         // 所有实例的响应拦截器
         this.instance?.interceptors.response.use(
             (res) => {
-                console.log("所有实例的响应拦截器:响应成功");
                 // 关闭加载遮罩
                 if (this.showLoading) this.loading?.close();
 
@@ -64,8 +62,6 @@ class LinRequest {
                 return res.data;
             },
             (err) => {
-                console.log("所有实例的响应拦截器:响应失败");
-
                 // 关闭加载遮罩
                 this.loading?.close();
 
@@ -77,36 +73,46 @@ class LinRequest {
         );
     }
 
-    request(config: LinRequestConfig) {
-        if (config.interceptors?.requestInterceptor) {
-            // 局部请求拦截
-            config = config.interceptors.requestInterceptor(config);
-        }
-
-        // 单独配置关闭loading
-        if (config.showLoading === false) this.showLoading = config.showLoading;
-
-        this.instance.request(config).then(
-            (res) => {
-                if (config.interceptors?.responseInterceptor) {
-                    // 局部响应拦截
-                    res = config.interceptors.responseInterceptor(res);
-                }
-                // 恢复初始化
-                this.showLoading = !this.showLoading;
-                console.log(res);
-            },
-            (err) => {
-                // 恢复初始化
-                this.showLoading = !this.showLoading;
-                return err;
+    request<T>(config: LinRequestConfig): Promise<T> {
+        return new Promise<T>((resolve, reject) => {
+            if (config.interceptors?.requestInterceptor) {
+                // 局部请求拦截
+                config = config.interceptors.requestInterceptor(config);
             }
-        );
-    }
-    get(url: string, config?: LinRequestConfig) {
-        this.instance.get(url, config).then((res) => {
-            console.log(res);
+
+            // 单独配置关闭loading
+            if (config.showLoading === false) this.showLoading = config.showLoading;
+
+            this.instance.request<any, T>(config).then(
+                (res) => {
+                    if (config.interceptors?.responseInterceptor) {
+                        // 局部响应拦截
+                        res = config.interceptors.responseInterceptor(res);
+                    }
+                    // 恢复初始化不影响下一个请求
+                    this.showLoading = DEFAULT_LOADING;
+                    // 返回结果
+                    resolve(res);
+                },
+                (err) => {
+                    // 恢复初始化不影响下一个请求
+                    this.showLoading = DEFAULT_LOADING;
+                    reject(err);
+                }
+            );
         });
+    }
+    get<T>(config: LinRequestConfig) {
+        return this.request<T>({ ...config, method: "GET" });
+    }
+    post<T>(config: LinRequestConfig) {
+        return this.request<T>({ ...config, method: "POST" });
+    }
+    delete<T>(config: LinRequestConfig) {
+        return this.request<T>({ ...config, method: "DELETE" });
+    }
+    patch<T>(config: LinRequestConfig) {
+        return this.request<T>({ ...config, method: "PATCH" });
     }
 }
 export default LinRequest;

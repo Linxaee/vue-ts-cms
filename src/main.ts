@@ -1,8 +1,7 @@
 import { createApp } from "vue";
 
-import ElementPlus from "element-plus";
+// import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
-import { ElLoading } from "element-plus";
 
 import App from "./App.vue";
 
@@ -13,25 +12,30 @@ import { globalRegister } from "./global";
 
 import router from "./router";
 import store from "./store";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const app = createApp(App);
 
-app.use(router).use(ElementPlus).use(store).use(globalRegister);
+app.use(router).use(store).use(globalRegister);
 
 app.mount("#app");
-
-myRequest.request({
+interface DataType {
+    data: any;
+    success: boolean;
+}
+const data = myRequest.get<DataType>({
     url: "maimaidxprober/music_data",
-    method: "GET",
     interceptors: {
-        requestInterceptor: (config) => {
-            console.log("单独的请求拦截器");
+        requestInterceptor: (config: AxiosRequestConfig) => {
             return config;
         },
-        responseInterceptor: (res) => {
-            console.log("单独的响应拦截器");
+        responseInterceptor: (res: AxiosResponse) => {
             return res;
         }
     }
+});
+
+data.then((res) => {
+    console.log("data:res", res);
 });
 // myRequest.get("maimaidxprober/music_data");
