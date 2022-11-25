@@ -2,11 +2,13 @@ import { createApp } from "vue";
 
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
+import { ElLoading } from "element-plus";
 
 import App from "./App.vue";
 
 import myRequest from "./service/index";
 
+// 全局注册
 import { globalRegister } from "./global";
 
 import router from "./router";

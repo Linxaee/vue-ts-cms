@@ -5,19 +5,24 @@ const myRequest = new LinRequest({
     timeout: TIME_OUT,
     interceptors: {
         requestInterceptor: (config) => {
-            console.log("请求拦截成功");
+            // token携带
+            const token = "";
+            if (token) {
+                config.headers!.Authorization = `Bearer ${token}`;
+            }
+            console.log("单个实例的请求拦截器：请求成功");
             return config;
         },
         requestInterceptorCatch: (err) => {
-            console.log("请求错误拦截成功");
+            console.log("单个实例的请求拦截器：请求失败");
             return err;
         },
-        responseInterceptor: (config) => {
-            console.log("响应拦截成功");
-            return config;
+        responseInterceptor: (res) => {
+            console.log("单个实例的响应拦截器：响应成功");
+            return res;
         },
         responseInterceptorCatch: (err) => {
-            console.log("响应错误拦截成功");
+            console.log("单个实例的响应拦截器：响应失败");
             return err;
         }
     }

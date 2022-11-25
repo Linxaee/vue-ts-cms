@@ -9,4 +9,5 @@ export interface LinRequestInterceptor {
 // 自定义config接口继承AxiosRequestConfig的基础上，扩展interceptors属性，其上有待实现的拦截器
 export interface LinRequestConfig extends AxiosRequestConfig {
     interceptors?: LinRequestInterceptor;
+    showLoading?: boolean;
 }
