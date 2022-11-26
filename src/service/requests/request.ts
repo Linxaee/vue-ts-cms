@@ -72,8 +72,7 @@ class LinRequest {
             }
         );
     }
-
-    request<T>(config: LinRequestConfig): Promise<T> {
+    request<T>(config: LinRequestConfig<T>): Promise<T> {
         return new Promise<T>((resolve, reject) => {
             if (config.interceptors?.requestInterceptor) {
                 // 局部请求拦截
@@ -86,6 +85,9 @@ class LinRequest {
             this.instance.request<any, T>(config).then(
                 (res) => {
                     if (config.interceptors?.responseInterceptor) {
+                        // T(DataType)的传递
+                        // get<DataType> -> request<DataType> -> LinRequestConfig<DataType>
+                        // -> LinRequestInterceptor<DataType> -> responseInterceptor?: (res: DataType) => DataType;
                         // 局部响应拦截
                         res = config.interceptors.responseInterceptor(res);
                     }
@@ -102,16 +104,16 @@ class LinRequest {
             );
         });
     }
-    get<T>(config: LinRequestConfig) {
+    get<T>(config: LinRequestConfig<T>) {
         return this.request<T>({ ...config, method: "GET" });
     }
-    post<T>(config: LinRequestConfig) {
+    post<T>(config: LinRequestConfig<T>) {
         return this.request<T>({ ...config, method: "POST" });
     }
-    delete<T>(config: LinRequestConfig) {
+    delete<T>(config: LinRequestConfig<T>) {
         return this.request<T>({ ...config, method: "DELETE" });
     }
-    patch<T>(config: LinRequestConfig) {
+    patch<T>(config: LinRequestConfig<T>) {
         return this.request<T>({ ...config, method: "PATCH" });
     }
 }

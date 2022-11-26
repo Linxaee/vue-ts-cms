@@ -17,7 +17,6 @@ import { AxiosRequestConfig, AxiosResponse } from "axios";
 const app = createApp(App);
 
 app.use(router).use(store).use(globalRegister);
-
 app.mount("#app");
 interface DataType {
     data: any;
