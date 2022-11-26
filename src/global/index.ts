@@ -1,3 +1,6 @@
 import { App } from "vue";
-
-export function globalRegister(app: App): void {}
+import { registerIcon } from "./register-element";
+export function globalRegister(app: App): void {
+    // 注册图标
+    registerIcon(app);
+}
