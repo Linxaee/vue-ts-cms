@@ -24,19 +24,19 @@ interface DataType {
     data: any;
     success: boolean;
 }
-const data = myRequest.get<DataType>({
-    url: "maimaidxprober/music_data",
-    interceptors: {
-        requestInterceptor: (config: AxiosRequestConfig) => {
-            return config;
-        },
-        responseInterceptor: (res: DataType) => {
-            return res;
-        }
-    }
-});
+// const data = myRequest.get<DataType>({
+//     url: "maimaidxprober/music_data",
+//     interceptors: {
+//         requestInterceptor: (config: AxiosRequestConfig) => {
+//             return config;
+//         },
+//         responseInterceptor: (res: DataType) => {
+//             return res;
+//         }
+//     }
+// });
 
-data.then((res) => {
-    console.log("data:res", res);
-});
+// data.then((res) => {
+//     console.log("data:res", res);
+// });
 // myRequest.get("maimaidxprober/music_data");
