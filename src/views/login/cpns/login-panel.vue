@@ -25,7 +25,7 @@
             <el-link type="primary">忘记密码</el-link>
         </div>
 
-        <el-button type="primary" class="login-btn">立即登录</el-button>
+        <el-button type="primary" class="login-btn" @click="handleLoginClick">立即登录</el-button>
     </div>
 </template>
 
@@ -35,10 +35,10 @@ import LoginAccount from "./login-account.vue";
 import LoginPhone from "./login-phone.vue";
 
 const isKeepPassword = ref(true);
-//     const accountRef = ref<InstanceType<typeof LoginAccount>>();
-//     const handleLoginClick = () => {
-//         accountRef.value?.loginAction();
-//     };
+const accountRef = ref<InstanceType<typeof LoginAccount>>();
+const handleLoginClick = () => {
+    accountRef.value?.loginAction();
+};
 </script>
 
 <style scoped lang="less">

@@ -1,6 +1,6 @@
 <template>
     <div class="login-account">
-        <el-form label-width="60px" :rules="rules" ref="formRef">
+        <el-form label-width="60px" :rules="rules" ref="elFormRef" :model="account">
             <el-form-item label="账号" prop="name">
                 <el-input v-model="account.name" />
             </el-form-item>
@@ -12,12 +12,25 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from "vue";
+import { reactive, defineExpose, ref } from "vue";
+import { ElForm } from "element-plus";
 import { rules } from "../config/account-config";
+
 const account = reactive({
     name: "",
     password: ""
 });
+// 获取elForm对象
+const elFormRef = ref<InstanceType<typeof ElForm>>();
+const loginAction = () => {
+    console.log(123);
+
+    elFormRef.value?.validate((valid) => {
+        console.log(valid);
+    });
+};
+
+defineExpose({ loginAction });
 </script>
 
 <style scoped></style>
