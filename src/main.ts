@@ -7,23 +7,17 @@ import "./assets/css/index.less";
 
 import App from "./App.vue";
 
-import myRequest from "./service/index";
-
 // 全局注册
 import { globalRegister } from "./global";
 
 import router from "./router";
 import store from "./store";
-import { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const app = createApp(App);
 
 app.use(router).use(store).use(globalRegister);
 app.mount("#app");
-interface DataType {
-    data: any;
-    success: boolean;
-}
+
 // const data = myRequest.get<DataType>({
 //     url: "maimaidxprober/music_data",
 //     interceptors: {
