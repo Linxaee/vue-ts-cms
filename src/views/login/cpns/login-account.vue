@@ -15,14 +15,16 @@
 import { reactive, defineExpose, ref } from "vue";
 import { ElForm } from "element-plus";
 import { rules } from "../config/account-config";
+import { useStore } from "vuex";
 import localCache from "@/utils/cache";
+const store = useStore();
 const account = reactive({
     name: localCache.getCache("name") ?? "",
     password: localCache.getCache("password") ?? ""
 });
 // 获取elForm对象
 const elFormRef = ref<InstanceType<typeof ElForm>>();
-// 在login-panel中调用，可以穿入参数
+// 在login-panel中调用，可以参数
 const loginAction = (isKeepPassword: boolean) => {
     elFormRef.value?.validate((valid) => {
         if (valid) {
@@ -35,6 +37,8 @@ const loginAction = (isKeepPassword: boolean) => {
                 localCache.deleteCache("name");
                 localCache.deleteCache("password");
             }
+            // 开始登录验证
+            store.dispatch("login/accountLoginAction", { ...account });
         }
     });
 };
