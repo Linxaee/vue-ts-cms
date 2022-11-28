@@ -4,6 +4,8 @@ import { IRootState } from "../types";
 import { accountLoginRequest, requestUserInfoById, requestUserMenuById } from "@/service/login/login";
 import { IAccount } from "@/service/login/type";
 import LocalCache from "@/utils/cache";
+import router from "@/router";
+
 /**
  * Module<S,R>
  * @param {S} 本模块的类型
@@ -41,12 +43,32 @@ const loginModule: Module<ILoginState, IRootState> = {
 
             // 请求用户信息和侧边列表项
             const [userInfoRes, menuInfoRes] = await Promise.all([requestUserInfoById(id), requestUserMenuById(id)]);
+            LocalCache.setCache("userInfo", userInfoRes.data);
+            LocalCache.setCache("userMenus", menuInfoRes.data);
             commit("changeUserInfo", userInfoRes.data);
             commit("changeUserMenus", menuInfoRes.data);
+
+            // 路由跳转
+            router.push("/main");
         },
         phoneLoginAction({ commit }, payload: any) {
             // 不做
             console.log("执行phoneLoginAction", payload);
+        },
+        // 加载本地数据到vuex
+        loadLocalLogin({ commit }) {
+            const token = LocalCache.getCache("token");
+            if (token) {
+                commit("changeToken", token);
+            }
+            const userInfo = LocalCache.getCache("userInfo");
+            if (userInfo) {
+                commit("changeUserInfo", userInfo);
+            }
+            const userMenus = LocalCache.getCache("userMenus");
+            if (userMenus) {
+                commit("changeUserMenus", userMenus);
+            }
         }
     }
 };
