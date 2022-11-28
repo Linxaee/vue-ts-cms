@@ -1,6 +1,6 @@
 import axios from "axios";
 import type { AxiosInstance } from "axios";
-import type { LinRequestInterceptor, LinRequestConfig } from "@/service/requests/types";
+import type { LinInterceptor, LinRequestConfig } from "@/service/requests/types";
 import { ElLoading } from "element-plus";
 import { LoadingInstance } from "element-plus/es/components/loading/src/loading";
 
@@ -9,7 +9,7 @@ class LinRequest {
     // 多个request对象时创建多个实例并保留
     instance: AxiosInstance;
     // 可选传入自定义拦截器
-    interceptors?: LinRequestInterceptor;
+    interceptors?: LinInterceptor;
     showLoading: boolean;
     loading?: LoadingInstance;
 
@@ -87,7 +87,7 @@ class LinRequest {
                     if (config.interceptors?.responseInterceptor) {
                         // T(DataType)的传递
                         // get<DataType> -> request<DataType> -> LinRequestConfig<DataType>
-                        // -> LinRequestInterceptor<DataType> -> responseInterceptor?: (res: DataType) => DataType;
+                        // -> LinInterceptor<DataType> -> responseInterceptor?: (res: DataType) => DataType;
                         // 局部响应拦截
                         res = config.interceptors.responseInterceptor(res);
                     }
@@ -104,17 +104,17 @@ class LinRequest {
             );
         });
     }
-    get<T>(config: LinRequestConfig<T>) {
-        return this.request<T>({ ...config, method: "GET" });
+    get<T>(url: string, config?: LinRequestConfig<T>) {
+        return this.request<T>({ ...config, method: "GET", url });
     }
-    post<T>(config: LinRequestConfig<T>) {
-        return this.request<T>({ ...config, method: "POST" });
+    post<T>(url: string, config?: LinRequestConfig<T>) {
+        return this.request<T>({ ...config, method: "POST", url });
     }
-    delete<T>(config: LinRequestConfig<T>) {
-        return this.request<T>({ ...config, method: "DELETE" });
+    delete<T>(url: string, config?: LinRequestConfig<T>) {
+        return this.request<T>({ ...config, method: "DELETE", url });
     }
-    patch<T>(config: LinRequestConfig<T>) {
-        return this.request<T>({ ...config, method: "PATCH" });
+    patch<T>(url: string, config?: LinRequestConfig<T>) {
+        return this.request<T>({ ...config, method: "PATCH", url });
     }
 }
 export default LinRequest;
