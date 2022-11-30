@@ -3,6 +3,7 @@ import { ILoginState } from "./types";
 import { IRootState } from "../types";
 import { accountLoginRequest, requestUserInfoById, requestUserMenuById } from "@/service/login/login";
 import { IAccount } from "@/service/login/type";
+import { mapMenusToRoutes } from "@/utils/map-menus";
 import LocalCache from "@/utils/cache";
 import router from "@/router";
 
@@ -31,6 +32,11 @@ const loginModule: Module<ILoginState, IRootState> = {
         },
         changeUserMenus(state, userMenus) {
             state.userMenus = userMenus;
+            // 添加映射
+            const routes = mapMenusToRoutes(userMenus);
+            routes.forEach((route) => {
+                router.addRoute("main", route);
+            });
         }
     },
     actions: {
