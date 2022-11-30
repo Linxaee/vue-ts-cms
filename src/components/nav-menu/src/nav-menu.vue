@@ -26,7 +26,6 @@
                         </template>
                         <template v-for="subitem in item.children" :key="subitem.id"
                             ><el-menu-item :index="subitem.id + ''" @click="handleMenuClick(subitem)">
-                                <i v-if="subitem.icon" :class="subitem.icon"></i>
                                 <span>{{ subitem.name }}</span>
                             </el-menu-item>
                         </template>

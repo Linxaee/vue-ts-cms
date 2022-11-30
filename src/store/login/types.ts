@@ -1,5 +1,6 @@
+import { IUserInfo, ITopMenuInfo } from "@/service/login/type";
 export interface ILoginState {
     token: string;
-    userInfo: any;
-    userMenus: any;
+    userInfo?: IUserInfo;
+    userMenus: ITopMenuInfo[];
 }

@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
-
-export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
+import { ITopMenuInfo } from "@/service/login/type";
+export function mapMenusToRoutes(userMenus: ITopMenuInfo[]): RouteRecordRaw[] {
     const routes: RouteRecordRaw[] = [];
     // 1.先加载所有的路由
     const allRoutes: RouteRecordRaw[] = [];
@@ -13,7 +13,8 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
     });
     // 2.根据菜单获取需要的路由
     // 递归获取
-    const _recurseGetRoute = (menus: any[]) => {
+    const _recurseGetRoute = (menus?: ITopMenuInfo[]) => {
+        if (!menus) return;
         for (const menu of menus) {
             if (menu.type === 2) {
                 const route = allRoutes.find((route) => route.path === menu.url);

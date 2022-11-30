@@ -41,3 +41,22 @@ export interface IUserInfo {
     role: Role;
     department: Department;
 }
+
+export interface IMenuInfo {
+    id: number;
+    url: string;
+    name: string;
+    sort: number;
+    type: number;
+    children?: IMenuInfo[];
+    parentId: number;
+}
+export interface ITopMenuInfo {
+    id: number;
+    name: string;
+    sort: number;
+    type: number;
+    url: string;
+    icon?: string;
+    children?: IMenuInfo[];
+}

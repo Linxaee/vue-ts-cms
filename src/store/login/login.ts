@@ -2,8 +2,8 @@ import { Module } from "vuex";
 import { ILoginState } from "./types";
 import { IRootState } from "../types";
 import { accountLoginRequest, requestUserInfoById, requestUserMenuById } from "@/service/login/login";
-import { IAccount } from "@/service/login/type";
-import { mapMenusToRoutes } from "@/utils/map-menus";
+import { IAccount, IUserInfo, ITopMenuInfo } from "@/service/login/type";
+import { mapMenusToRoutes } from "@/utils/mapMenus";
 import LocalCache from "@/utils/cache";
 import router from "@/router";
 
@@ -18,7 +18,7 @@ const loginModule: Module<ILoginState, IRootState> = {
     state() {
         return {
             token: "",
-            userInfo: {},
+            userInfo: undefined,
             userMenus: []
         };
     },
@@ -27,10 +27,10 @@ const loginModule: Module<ILoginState, IRootState> = {
         changeToken(state, token: string) {
             state.token = token;
         },
-        changeUserInfo(state, userInfo) {
+        changeUserInfo(state, userInfo: IUserInfo) {
             state.userInfo = userInfo;
         },
-        changeUserMenus(state, userMenus) {
+        changeUserMenus(state, userMenus: ITopMenuInfo[]) {
             state.userMenus = userMenus;
             // 添加映射
             const routes = mapMenusToRoutes(userMenus);
@@ -55,6 +55,7 @@ const loginModule: Module<ILoginState, IRootState> = {
             const menuInfoRes = await requestUserMenuById(userInfoRes.data.role.id);
             LocalCache.setCache("userMenus", menuInfoRes.data);
             commit("changeUserMenus", menuInfoRes.data);
+            console.log(menuInfoRes);
 
             // 路由跳转
             router.push("/main");
