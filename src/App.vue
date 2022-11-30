@@ -1,7 +1,7 @@
 <template>
     <div class="app">
-        <router-link to="/login">登录</router-link>
-        <router-link to="/main">首页</router-link>
+        <!-- <router-link to="/login"></router-link>
+        <router-link to="/main"></router-link> -->
         <router-view></router-view>
     </div>
 </template>
@@ -21,6 +21,5 @@ export default defineComponent({
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 60px;
 }
 </style>

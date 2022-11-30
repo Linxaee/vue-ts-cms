@@ -42,10 +42,12 @@ const loginModule: Module<ILoginState, IRootState> = {
             commit("changeToken", token);
 
             // 请求用户信息和侧边列表项
-            const [userInfoRes, menuInfoRes] = await Promise.all([requestUserInfoById(id), requestUserMenuById(id)]);
+            const userInfoRes = await requestUserInfoById(id);
             LocalCache.setCache("userInfo", userInfoRes.data);
-            LocalCache.setCache("userMenus", menuInfoRes.data);
             commit("changeUserInfo", userInfoRes.data);
+
+            const menuInfoRes = await requestUserMenuById(userInfoRes.data.role.id);
+            LocalCache.setCache("userMenus", menuInfoRes.data);
             commit("changeUserMenus", menuInfoRes.data);
 
             // 路由跳转
@@ -53,7 +55,7 @@ const loginModule: Module<ILoginState, IRootState> = {
         },
         phoneLoginAction({ commit }, payload: any) {
             // 不做
-            console.log("执行phoneLoginAction", payload);
+            // console.log("执行phoneLoginAction", payload);
         },
         // 加载本地数据到vuex
         loadLocalLogin({ commit }) {
