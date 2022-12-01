@@ -22,6 +22,7 @@ module.exports = {
         "vue/multi-word-component-names": "off",
         "@typescript-eslint/no-empty-function": "off",
         "vue/no-unused-vars": "off",
+        "prettier/prettier": "off",
         "vue/valid-v-slot": [
             "error",
             {
