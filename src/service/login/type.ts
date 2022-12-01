@@ -44,19 +44,15 @@ export interface IUserInfo {
 
 export interface IMenuInfo {
     id: number;
-    url: string;
     name: string;
     sort: number;
     type: number;
+    url: string;
     children?: IMenuInfo[];
+}
+export interface ISubMenuInfo extends IMenuInfo {
     parentId: number;
 }
-export interface ITopMenuInfo {
-    id: number;
-    name: string;
-    sort: number;
-    type: number;
-    url: string;
+export interface ITopMenuInfo extends IMenuInfo {
     icon?: string;
-    children?: IMenuInfo[];
 }

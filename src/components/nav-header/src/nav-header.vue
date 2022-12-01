@@ -4,7 +4,7 @@
             ><el-icon> <component :is="isFold ? 'Expand' : 'Fold'" /> </el-icon
         ></i>
         <div class="content">
-            <div>面包屑</div>
+            <div><lin-breadcrumb></lin-breadcrumb></div>
             <user-info />
         </div>
     </div>
@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import { defineEmits, ref } from "vue";
-
+import LinBreadcrumb from "@/base-ui/breadcrumb";
 const emit = defineEmits(["foldChange"]);
 const isFold = ref(false);
 const handleFoldClick = () => {

@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 // 导入路由类型
 import type { RouteRecordRaw } from "vue-router";
 import LocalCache from "@/utils/cache";
-
+import { firstMenu } from "@/utils";
 const routes: RouteRecordRaw[] = [
     // { path: "/", redirect: "/login" },
     {
@@ -34,6 +34,8 @@ const router = createRouter({
 router.beforeEach((to) => {
     if (to.path != "/login" && !LocalCache.getCache("token")) return "/login";
     if (to.path == "/login" && LocalCache.getCache("token")) return "/main";
+
+    if (to.path === "/main") return firstMenu?.url;
 });
 
 export default router;

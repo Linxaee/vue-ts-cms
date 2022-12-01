@@ -15,8 +15,7 @@ import store from "./store";
 import { setupStore } from "./store";
 
 const app = createApp(App);
-
+setupStore();
 app.use(router).use(store).use(globalRegister).use(ElementPlus);
 app.mount("#app");
 // 页面刷新初始化vuex数据
-setupStore();
