@@ -23,6 +23,7 @@ module.exports = {
         "@typescript-eslint/no-empty-function": "off",
         "vue/no-unused-vars": "off",
         "prettier/prettier": "off",
+        "no-unused-labels": "off",
         "vue/valid-v-slot": [
             "error",
             {
