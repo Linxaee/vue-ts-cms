@@ -3,6 +3,10 @@
         <i class="fold-menu" @click="handleFoldClick"
             ><el-icon> <component :is="isFold ? 'Expand' : 'Fold'" /> </el-icon
         ></i>
+        <div class="content">
+            <div>面包屑</div>
+            <user-info />
+        </div>
     </div>
 </template>
 
@@ -19,9 +23,21 @@ const handleFoldClick = () => {
 
 <style scoped lang="less">
 .nav-header {
+    display: flex;
+    width: 100%;
+
     .fold-menu {
         font-size: 30px;
+        line-height: 22px;
         cursor: pointer;
+    }
+
+    .content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex: 1;
+        padding: 0 20px;
     }
 }
 </style>
