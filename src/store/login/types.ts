@@ -1,4 +1,4 @@
-import { IUserInfo, ITopMenuInfo } from "@/service/login/type";
+import { IUserInfo, ITopMenuInfo } from "@/service/login/types";
 export interface ILoginState {
     token: string;
     userInfo?: IUserInfo;

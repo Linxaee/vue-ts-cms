@@ -11,7 +11,8 @@ export interface LinRequestConfig<T = AxiosResponse> extends AxiosRequestConfig 
     interceptors?: LinInterceptor<T>;
     showLoading?: boolean;
 }
-export interface DataType {
-    data: any;
-    success: boolean;
+
+export interface IDataType<T = any> {
+    code: number;
+    data: T;
 }

@@ -1,6 +1,7 @@
 import myRequest from "../index";
 
-import { IAccount, IDataType, ILoginResult, Role, Department, IUserInfo } from "./type";
+import { IAccount, ILoginResult, IUserInfo } from "./types";
+import { IDataType } from "../requests/types";
 
 enum LoginAPI {
     AccountLogin = "/login",
@@ -11,6 +12,8 @@ enum LoginAPI {
 export const accountLoginRequest = (account: IAccount) =>
     myRequest.post<IDataType<ILoginResult>>(LoginAPI.AccountLogin, { data: account });
 
-export const requestUserInfoById = (id: number) => myRequest.get<IDataType<IUserInfo>>(LoginAPI.LoginUserInfo + id);
+export const requestUserInfoById = (id: number) =>
+    myRequest.get<IDataType<IUserInfo>>(LoginAPI.LoginUserInfo + id);
 
-export const requestUserMenuById = (id: number) => myRequest.get<IDataType>(LoginAPI.UserMenus + id + "/menu");
+export const requestUserMenuById = (id: number) =>
+    myRequest.get<IDataType>(LoginAPI.UserMenus + id + "/menu");

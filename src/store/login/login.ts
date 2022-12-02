@@ -2,7 +2,7 @@ import { Module } from "vuex";
 import { ILoginState } from "./types";
 import { IRootState } from "../types";
 import { accountLoginRequest, requestUserInfoById, requestUserMenuById } from "@/service/login/login";
-import { IAccount, IUserInfo, ITopMenuInfo } from "@/service/login/type";
+import { IAccount, IUserInfo, ITopMenuInfo } from "@/service/login/types";
 import { mapMenusToRoutes } from "@/utils/mapMenus";
 import LocalCache from "@/utils/cache";
 import router from "@/router";

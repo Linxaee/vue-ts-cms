@@ -11,19 +11,15 @@ const myRequest = new LinRequest({
             if (token) {
                 config.headers!.Authorization = `Bearer ${token}`;
             }
-            console.log("单个实例的请求拦截器：请求成功");
             return config;
         },
         requestInterceptorCatch: (err) => {
-            console.log("单个实例的请求拦截器：请求失败");
             return err;
         },
         responseInterceptor: (res) => {
-            console.log("单个实例的响应拦截器：响应成功");
             return res;
         },
         responseInterceptorCatch: (err) => {
-            console.log("单个实例的响应拦截器：响应失败");
             return err;
         }
     }

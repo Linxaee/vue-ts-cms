@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
-import { ITopMenuInfo, ISubMenuInfo } from "@/service/login/type";
+import { ITopMenuInfo, ISubMenuInfo } from "@/service/login/types";
 import { IBreadcrumb } from "@/base-ui/breadcrumb";
 let firstMenu: ISubMenuInfo | undefined = undefined;
 export function mapMenusToRoutes(userMenus: ITopMenuInfo[]): RouteRecordRaw[] {
