@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
 import { PropType, ref, watch } from "vue";
-import { IFormItem } from "../types";
+import { IFormItem } from "../../table/types";
 
 const props = defineProps({
     modelValue: {
@@ -104,7 +104,7 @@ watch(
     }
     .footer {
         text-align: right;
-        padding: 20px 10px;
+        padding: 20px;
     }
 }
 </style>

@@ -6,7 +6,7 @@
             </template>
             <template #footer>
                 <el-button>重置</el-button>
-                <el-button>搜索</el-button>
+                <el-button type="primary">搜索</el-button>
             </template>
         </lin-form>
     </div>
