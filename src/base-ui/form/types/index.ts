@@ -11,7 +11,6 @@ export interface IFormItem {
     // 针对特殊的属性
     otherOptions?: any;
 }
-
 export interface IOptions {
     value: string | number;
     title: string;
@@ -28,7 +27,7 @@ export interface IColLayout {
     xl: number | object;
     tag: string;
 }
-export interface IForm {
+export interface IFormConfig {
     formItems: IFormItem[];
     labelWidth?: string;
     colLayout?: LinOptional<IColLayout>;

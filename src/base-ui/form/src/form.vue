@@ -1,6 +1,6 @@
-import { defineProps } from 'vue';
 <template>
     <div class="lin-form">
+        <div class="header"><slot name="title"></slot></div>
         <el-form :label-width="labelWidth">
             <el-row>
                 <template v-for="(item, index) in formItems" :key="item.label"
@@ -40,11 +40,12 @@ import { defineProps } from 'vue';
                 ></template>
             </el-row>
         </el-form>
+        <div class="footer"><slot name="footer"></slot></div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { defineProps, defineEmits, PropType, ref, watch } from "vue";
+import { PropType, ref, watch } from "vue";
 import { IFormItem } from "../types";
 
 const props = defineProps({
@@ -83,6 +84,7 @@ const props = defineProps({
 });
 const emit = defineEmits(["update:modelValue"]);
 
+// 为保证单向数据流，结构出props里的modelValue再修改，最后通过watch深度监听发送update事件修改父组件的formData
 const formData = ref({ ...props.modelValue });
 
 watch(
@@ -99,6 +101,10 @@ watch(
     padding-top: 20px;
     .form-item {
         padding: 5px 30px;
+    }
+    .footer {
+        text-align: right;
+        padding: 20px 10px;
     }
 }
 </style>

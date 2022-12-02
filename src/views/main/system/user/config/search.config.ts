@@ -1,5 +1,5 @@
-import { IForm } from "@/base-ui/form";
-export const searchFormConfig: IForm = {
+import { IFormConfig } from "@/base-ui/form";
+export const searchFormConfig: IFormConfig = {
     labelWidth: "120px",
     itemLayout: {
         padding: "10px 40px"
@@ -26,7 +26,7 @@ export const searchFormConfig: IForm = {
             placeholder: "请输入密码"
         },
         {
-            field: 'sport',
+            field: "sport",
             type: "select",
             label: "喜欢的运动",
             rules: [],
@@ -37,7 +37,7 @@ export const searchFormConfig: IForm = {
             ]
         },
         {
-            field: 'createTime',
+            field: "createTime",
             type: "datepicker",
             label: "创建时间",
             rules: [],

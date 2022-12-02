@@ -1,20 +1,12 @@
 <template>
     <div class="user">
-        <lin-form v-bind="searchFormConfig" v-model="formData" />
+        <PageSearch :searchFormConfig="searchFormConfig"></PageSearch>
     </div>
 </template>
 
 <script lang="ts" setup>
-import LinForm from "@/base-ui/form";
-import { ref } from "vue";
 import { searchFormConfig } from "./config/search.config";
-const formData = ref({
-    createTime: "",
-    id: "",
-    name: "",
-    password: "",
-    sport: ""
-});
+import PageSearch from "@/components/page-search/src/page-search.vue";
 </script>
 
 <style scoped></style>
