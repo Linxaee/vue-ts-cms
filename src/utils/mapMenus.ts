@@ -1,5 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
 import { ITopMenuInfo, ISubMenuInfo } from "@/service/login/type";
+import { IBreadcrumb } from "@/base-ui/breadcrumb";
 let firstMenu: ISubMenuInfo | undefined = undefined;
 export function mapMenusToRoutes(userMenus: ITopMenuInfo[]): RouteRecordRaw[] {
     const routes: RouteRecordRaw[] = [];
@@ -29,16 +30,42 @@ export function mapMenusToRoutes(userMenus: ITopMenuInfo[]): RouteRecordRaw[] {
     return routes;
 }
 
-export function pathMapToMenu(userMenu: ITopMenuInfo[], curPath: string): ITopMenuInfo | undefined {
+/**
+ * 给出当前路径，获取当前路径对应的菜单对象
+ * @param userMenu 全部的菜单对象
+ * @param curPath 当前的路径
+ * @param breadcrumbs 面包屑数组
+ * @returns 匹配到的菜单对象
+ */
+export function pathMapToMenu(
+    userMenu: ITopMenuInfo[],
+    curPath: string,
+    breadcrumbs?: IBreadcrumb[]
+): ITopMenuInfo | undefined {
     if (!userMenu) return;
     for (const menu of userMenu) {
         if (menu.type === 1) {
-            const res = pathMapToMenu(menu.children!, curPath);
-            if (res) return res;
+            const findMenu = pathMapToMenu(menu.children ?? [], curPath);
+            if (findMenu) {
+                breadcrumbs?.push({ name: menu.name });
+                breadcrumbs?.push({ name: findMenu.name });
+                return findMenu;
+            }
         } else if (menu.type === 2 && menu.url === curPath) {
             return menu;
         }
     }
 }
 
+/**
+ *
+ * @param userMenus 全部的菜单对象
+ * @param curPath 当前的路径
+ * @returns 面包屑数组
+ */
+export function pathMapBreadcrumbs(userMenus: any[], curPath: string) {
+    const breadcrumbs: IBreadcrumb[] = [];
+    pathMapToMenu(userMenus, curPath, breadcrumbs);
+    return breadcrumbs;
+}
 export { firstMenu };
