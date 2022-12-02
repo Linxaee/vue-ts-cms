@@ -11,6 +11,7 @@ import { defineProps } from 'vue';
                                     :placeholder="item.placeholder"
                                     :show-password="item.type === 'password'"
                                     v-bind="item.otherOptions"
+                                    v-model="formData[`${item.field}`]"
                                 />
                             </template>
                             <template v-else-if="item.type === 'select'">
@@ -18,6 +19,7 @@ import { defineProps } from 'vue';
                                     :placeholder="item.placeholder"
                                     style="width: 100%"
                                     v-bind="item.otherOptions"
+                                    v-model="formData[`${item.field}`]"
                                 >
                                     <el-option
                                         v-for="option in item.options"
@@ -28,7 +30,11 @@ import { defineProps } from 'vue';
                                 </el-select>
                             </template>
                             <template v-else-if="item.type === 'datepicker'">
-                                <el-date-picker v-bind="item.otherOptions" style="width: 100%" />
+                                <el-date-picker
+                                    v-bind="item.otherOptions"
+                                    style="width: 100%"
+                                    v-model="formData[`${item.field}`]"
+                                />
                             </template>
                         </el-form-item> </el-col
                 ></template>
@@ -38,9 +44,14 @@ import { defineProps } from 'vue';
 </template>
 
 <script lang="ts" setup>
-import { defineProps, PropType } from "vue";
+import { defineProps, defineEmits, PropType, ref, watch } from "vue";
 import { IFormItem } from "../types";
+
 const props = defineProps({
+    modelValue: {
+        type: Object,
+        required: true
+    },
     // 表单项
     formItems: {
         type: Array as PropType<IFormItem[]>,
@@ -70,6 +81,17 @@ const props = defineProps({
         })
     }
 });
+const emit = defineEmits(["update:modelValue"]);
+
+const formData = ref({ ...props.modelValue });
+
+watch(
+    formData,
+    (newValue) => {
+        emit("update:modelValue", newValue);
+    },
+    { deep: true }
+);
 </script>
 
 <style lang="less" scoped>
