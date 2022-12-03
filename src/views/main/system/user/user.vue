@@ -4,10 +4,12 @@
         <div class="content">
             <LinTable :listData="userList" :propList="propList">
                 <template #enable="scope">
-                    <el-button> {{ scope.row.enable ? "启用" : "禁用" }}</el-button>
+                    <el-button :type="scope.row.enable ? 'success' : 'danger'" plain>
+                        {{ scope.row.enable ? "启用" : "禁用" }}</el-button
+                    >
                 </template>
                 <template #createAt="scope">
-                    {{ scope.row.createAt }}
+                    <span v-format-time="'YYYY/MM/DD HH:MM'"> {{ scope.row.createAt }}</span>
                 </template>
             </LinTable>
         </div>

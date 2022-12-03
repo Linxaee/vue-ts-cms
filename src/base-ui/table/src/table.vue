@@ -17,7 +17,7 @@
 <script lang="ts" setup>
 import { defineComponent } from "vue";
 import { IPropListItem } from "../types/index";
-const props = defineProps<{ listData: Array<unknown>; propList: Array<IPropListItem> }>();
+const props = defineProps<{ listData: unknown[]; propList: IPropListItem[] }>();
 </script>
 
 <style scoped></style>
