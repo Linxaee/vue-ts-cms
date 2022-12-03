@@ -1,7 +1,9 @@
 import { IUserInfo } from "@/service/login/types";
 export interface ISystemState {
-    userList: IUserInfo[];
-    userCount: number;
+    usersList: IUserInfo[];
+    usersCount: number;
+    roleList: any[];
+    roleCount: number;
 }
 export interface IQueryInfo {
     offset: number;
@@ -9,6 +11,6 @@ export interface IQueryInfo {
 }
 export interface IGetPagePayload {
     type: string;
-    pageUrl: string;
+    pageName: string;
     queryInfo?: IQueryInfo;
 }

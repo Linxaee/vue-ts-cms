@@ -1,90 +1,16 @@
 <template>
     <div class="user">
         <PageSearch :searchFormConfig="searchFormConfig"></PageSearch>
-        <div class="content">
-            <LinTable
-                :listData="userList"
-                :propList="propList"
-                :showSelectColumn="true"
-                @selection-change="handleSelectChange"
-            >
-                <template #enable="scope">
-                    <el-button :type="scope.row.enable ? 'success' : 'danger'" plain>
-                        {{ scope.row.enable ? "启用" : "禁用" }}</el-button
-                    >
-                </template>
-                <template #createAt="scope">
-                    <span v-format-time="'YYYY/MM/DD HH:MM'"> {{ scope.row.createAt }}</span>
-                </template>
-                <template #updateAt="scope">
-                    <span v-format-time="'YYYY/MM/DD HH:MM'"> {{ scope.row.updateAt }}</span>
-                </template>
-                <template #handler>
-                    <div class="handler-btns">
-                        <el-button-group class="ml-4">
-                            <el-button type="primary" :icon="Edit" size="small" plain />
-                            <el-button type="primary" :icon="Delete" size="small" plain />
-                        </el-button-group>
-                    </div>
-                </template>
-            </LinTable>
-        </div>
+        <PageContent :contentTableConfig="contentTableConfig" pageName="users"></PageContent>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { Delete, Edit } from "@element-plus/icons-vue";
-import { searchFormConfig } from "./config/search.config";
-import PageSearch from "@/components/page-search/src/page-search.vue";
-import LinTable from "@/base-ui/table/index";
-
-import { useStore } from "@/store";
-import { IGetPagePayload } from "@/store/main/system/types";
-import { computed } from "vue";
-import { IPropListItem } from "@/base-ui/table/types";
-
-const store = useStore();
-
-store.dispatch<IGetPagePayload>({
-    type: "system/getPageListAction",
-    pageUrl: "/users/list",
-    queryInfo: {
-        offset: 0,
-        size: 10
-    }
-});
-
-const userList = computed(() => store.state.system.userList);
-const userCount = computed(() => store.state.system.userCount);
-const propList: IPropListItem[] = [
-    { prop: "name", label: "用户名", minWidth: "100" },
-    { prop: "realname", label: "真实姓名", minWidth: "100" },
-    { prop: "cellphone", label: "手机号码", minWidth: "100" },
-    { prop: "enable", label: "状态", minWidth: "100" },
-    {
-        prop: "createAt",
-        label: "创建时间",
-        minWidth: "250"
-    },
-    {
-        prop: "updateAt",
-        label: "更新时间",
-        minWidth: "250"
-    },
-    {
-        label: "操作",
-        minWidth: "100",
-        slotName: "handler"
-    }
-];
-
-const handleSelectChange = (value: any) => {
-    console.log(value);
-};
+import { contentTableConfig } from "@/views/main/system/user/config/content.config";
+import { searchFormConfig } from "@/views/main/system/user/config/search.config";
+import PageSearch from "@/components/page-search";
+import PageContent from "@/components/page-content";
 </script>
 
 <style scoped>
-.content {
-    padding: 20px;
-}
 </style>

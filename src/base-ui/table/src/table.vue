@@ -1,5 +1,15 @@
 <template>
     <div class="lin-table">
+        <div class="header">
+            <slot name="header"
+                ><div class="title">
+                    <strong>{{ title }}</strong>
+                </div>
+                <div class="handler">
+                    <slot name="headerHandler"></slot>
+                </div>
+            </slot>
+        </div>
         <el-table
             :data="listData"
             border
@@ -23,12 +33,27 @@
                 <el-table-column v-bind="propItem" align="center">
                     <template #default="scope">
                         <slot :name="propItem.slotName ?? propItem.prop" :row="scope.row">
-                            {{ scope.row[propItem.prop] }}
+                            {{ propItem.prop ? scope.row[propItem.prop] : "" }}
                         </slot>
                     </template>
                 </el-table-column>
             </template>
         </el-table>
+        <div class="footer">
+            <slot name="footer"
+                ><el-pagination
+                    v-model:current-page="currentPage4"
+                    v-model:page-size="pageSize4"
+                    :page-sizes="[100, 200, 300, 400]"
+                    :small="small"
+                    :disabled="disabled"
+                    :background="background"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="400"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+            /></slot>
+        </div>
     </div>
 </template>
 
@@ -41,10 +66,12 @@ const props = withDefaults(
         propList: IPropListItem[];
         showIndexColumn?: boolean;
         showSelectColumn?: boolean;
+        title?: string;
     }>(),
     {
         showIndexColumn: true,
-        showSelectColumn: false
+        showSelectColumn: false,
+        title: ""
     }
 );
 
@@ -55,4 +82,21 @@ const handleSelectChange = (value: unknown[]) => {
 };
 </script>
 
-<style scoped></style>
+<style lang="less" scoped>
+.lin-table {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 8px 0;
+    }
+    .footer {
+        padding-top: 20px;
+    }
+}
+</style>
