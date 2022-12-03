@@ -2,7 +2,12 @@
     <div class="user">
         <PageSearch :searchFormConfig="searchFormConfig"></PageSearch>
         <div class="content">
-            <LinTable :listData="userList" :propList="propList">
+            <LinTable
+                :listData="userList"
+                :propList="propList"
+                :showSelectColumn="true"
+                @selection-change="handleSelectChange"
+            >
                 <template #enable="scope">
                     <el-button :type="scope.row.enable ? 'success' : 'danger'" plain>
                         {{ scope.row.enable ? "启用" : "禁用" }}</el-button
@@ -11,12 +16,24 @@
                 <template #createAt="scope">
                     <span v-format-time="'YYYY/MM/DD HH:MM'"> {{ scope.row.createAt }}</span>
                 </template>
+                <template #updateAt="scope">
+                    <span v-format-time="'YYYY/MM/DD HH:MM'"> {{ scope.row.updateAt }}</span>
+                </template>
+                <template #handler>
+                    <div class="handler-btns">
+                        <el-button-group class="ml-4">
+                            <el-button type="primary" :icon="Edit" size="small" plain />
+                            <el-button type="primary" :icon="Delete" size="small" plain />
+                        </el-button-group>
+                    </div>
+                </template>
             </LinTable>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
+import { Delete, Edit } from "@element-plus/icons-vue";
 import { searchFormConfig } from "./config/search.config";
 import PageSearch from "@/components/page-search/src/page-search.vue";
 import LinTable from "@/base-ui/table/index";
@@ -53,8 +70,17 @@ const propList: IPropListItem[] = [
         prop: "updateAt",
         label: "更新时间",
         minWidth: "250"
+    },
+    {
+        label: "操作",
+        minWidth: "100",
+        slotName: "handler"
     }
 ];
+
+const handleSelectChange = (value: any) => {
+    console.log(value);
+};
 </script>
 
 <style scoped>
