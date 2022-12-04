@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, defineExpose } from "vue";
 
 import LinTable from "@/base-ui/table";
 import { useStore } from "@/store";
@@ -41,18 +41,29 @@ const props = defineProps<{
     pageName: string;
 }>();
 
+// vuex中获取数据
 const store = useStore();
-store.dispatch<IGetPagePayload>({
-    type: "system/getPageListAction",
-    pageName: props.pageName,
-    queryInfo: {
-        offset: 0,
-        size: 10
-    }
-});
+
+const getPageData = (queryInfo: any = {}) => {
+    store.dispatch<IGetPagePayload>({
+        type: "system/getPageListAction",
+        pageName: props.pageName,
+        queryInfo: {
+            offset: 0,
+            size: 10,
+            ...queryInfo
+        }
+    });
+};
+
+getPageData();
 
 const userList = computed(() => store.getters[`system/pageListData`](props.pageName));
 // const userCount = computed(() => store.state.system.userCount)
+
+defineExpose({
+    getPageData
+});
 </script>
 
 <style scoped>

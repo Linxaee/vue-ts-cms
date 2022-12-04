@@ -11,7 +11,7 @@
                                     :placeholder="item.placeholder"
                                     :show-password="item.type === 'password'"
                                     v-bind="item.otherOptions"
-                                    v-model="formData[`${item.field}`]"
+                                    v-model="formData[item.field]"
                                 />
                             </template>
                             <template v-else-if="item.type === 'select'">
@@ -19,7 +19,7 @@
                                     :placeholder="item.placeholder"
                                     style="width: 100%"
                                     v-bind="item.otherOptions"
-                                    v-model="formData[`${item.field}`]"
+                                    v-model="formData[item.field]"
                                 >
                                     <el-option
                                         v-for="option in item.options"
@@ -33,7 +33,7 @@
                                 <el-date-picker
                                     v-bind="item.otherOptions"
                                     style="width: 100%"
-                                    v-model="formData[`${item.field}`]"
+                                    v-model="formData[item.field]"
                                 />
                             </template>
                         </el-form-item> </el-col
@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
 import { PropType, ref, watch } from "vue";
-import { IFormItem } from "../../table/types";
+import { IFormItem } from "../index";
 
 const props = defineProps({
     modelValue: {
