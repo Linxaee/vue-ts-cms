@@ -22,7 +22,7 @@ import PageContent from "@/components/page-content";
 
 import { usePageSearch } from "@/hooks/usePageSearch";
 
-const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch();
+const { pageContentRef, handleResetClick, handleQueryClick } = usePageSearch();
 </script>
 
 <style scoped></style>

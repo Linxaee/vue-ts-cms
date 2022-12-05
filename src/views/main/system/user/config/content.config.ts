@@ -1,5 +1,5 @@
-import { IPropListItem } from "@/base-ui/table/types";
-export const contentTableConfig = {
+import { ITableConfig } from "@/base-ui/table";
+export const contentTableConfig: ITableConfig = {
     title: "用户列表",
     propList: [
         { prop: "name", label: "用户名", minWidth: "100" },

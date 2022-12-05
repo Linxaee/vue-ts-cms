@@ -15,8 +15,12 @@
 <script lang="ts" setup>
 import LinForm, { IFormConfig } from "@/base-ui/form";
 import { ref } from "vue";
+import { TypeFromObj } from "@/utils/types";
 
-const emit = defineEmits(["queryBtnClick"]);
+const emit = defineEmits<{
+    (e: "resetBtnClick"): void;
+    (e: "queryBtnClick", formData: TypeFromObj<typeof formOriginData>): void;
+}>();
 
 const props = defineProps<{
     searchFormConfig: IFormConfig;
@@ -28,14 +32,14 @@ formItems.forEach((item) => {
     formOriginData[item.field] = "";
 });
 
-const formData = ref(formOriginData);
+const formData = ref<TypeFromObj<typeof formOriginData>>(formOriginData);
 
 // 2.优化二: 当用户点击重置
 const handleResetClick = () => {
     for (const key in formOriginData) {
         formData.value[key] = "";
     }
-    emit("queryBtnClick");
+    emit("resetBtnClick");
 };
 
 // 3.优化三: 当用户点击搜索

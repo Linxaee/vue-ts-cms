@@ -1,6 +1,11 @@
 <template>
     <div class="page-content">
-        <LinTable v-bind="contentTableConfig" :listData="userList">
+        <LinTable
+            v-bind="contentTableConfig"
+            :listData="dataList"
+            :listCount="dataCount"
+            v-model:pageInfo="pageInfo"
+        >
             <template #headerHandler>
                 <el-button>新建用户</el-button>
                 <el-button :icon="Refresh" type="primary"></el-button>
@@ -29,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineExpose } from "vue";
+import { computed, defineExpose, ref, watch } from "vue";
 
 import LinTable from "@/base-ui/table";
 import { useStore } from "@/store";
@@ -43,23 +48,24 @@ const props = defineProps<{
 
 // vuex中获取数据
 const store = useStore();
-
+const pageInfo = ref({ currentPage: 1, pageSize: 10 });
 const getPageData = (queryInfo: any = {}) => {
     store.dispatch<IGetPagePayload>({
         type: "system/getPageListAction",
         pageName: props.pageName,
         queryInfo: {
-            offset: 0,
-            size: 10,
+            offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
+            size: pageInfo.value.pageSize,
             ...queryInfo
         }
     });
 };
 
+watch(pageInfo, () => getPageData());
 getPageData();
 
-const userList = computed(() => store.getters[`system/pageListData`](props.pageName));
-// const userCount = computed(() => store.state.system.userCount)
+const dataList = computed(() => store.getters[`system/pageListData`](props.pageName));
+const dataCount = computed(() => store.getters[`system/pageListCount`](props.pageName));
 
 defineExpose({
     getPageData

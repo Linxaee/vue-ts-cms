@@ -1,15 +1,15 @@
 import { ref } from "vue";
 import PageContent from "@/components/page-content";
 
-export function usePageSearch() {
+export function usePageSearch<T = any>() {
     const pageContentRef = ref<InstanceType<typeof PageContent>>();
 
-    const handleQueryClick = (queryInfo: any) => {
-        (pageContentRef.value as any).getPageData(queryInfo);
+    const handleQueryClick = (queryInfo: T) => {
+        pageContentRef.value?.getPageData(queryInfo);
     };
 
-    const handleResetClick = (queryInfo: any) => {
-        (pageContentRef.value as any).getPageData(queryInfo);
+    const handleResetClick = () => {
+        pageContentRef.value?.getPageData();
     };
-    return [pageContentRef, handleResetClick, handleQueryClick];
+    return { pageContentRef, handleResetClick, handleQueryClick };
 }

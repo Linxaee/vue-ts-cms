@@ -1,4 +1,5 @@
 import { IFormConfig } from "@/base-ui/form";
+import { TypeFromObj } from "@/utils/types";
 export const searchFormConfig: IFormConfig = {
     labelWidth: "120px",
     itemLayout: {

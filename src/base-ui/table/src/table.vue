@@ -42,14 +42,14 @@
         <div class="footer">
             <slot name="footer"
                 ><el-pagination
-                    v-model:current-page="currentPage4"
-                    v-model:page-size="pageSize4"
-                    :page-sizes="[100, 200, 300, 400]"
+                    v-model:current-page="pageInfo.currentPage"
+                    v-model:page-size="pageInfo.pageSize"
+                    :page-sizes="[10, 20, 30]"
                     :small="small"
                     :disabled="disabled"
                     :background="background"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :total="400"
+                    :total="listCount"
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
             /></slot>
@@ -58,7 +58,7 @@
 </template>
 
 <script lang="ts" setup>
-import { IPropListItem } from "../types/index";
+import { IPropListItem, IPageInfo } from "../types/index";
 
 const props = withDefaults(
     defineProps<{
@@ -67,18 +67,28 @@ const props = withDefaults(
         showIndexColumn?: boolean;
         showSelectColumn?: boolean;
         title?: string;
+        listCount: number;
+        pageInfo?: IPageInfo;
     }>(),
     {
         showIndexColumn: true,
         showSelectColumn: false,
-        title: ""
+        title: "",
+        listCount: 0,
+        pageInfo: () => ({ currentPage: 1, pageSize: 10 })
     }
 );
 
-const emit = defineEmits(["selectionChange"]);
+const emit = defineEmits(["selectionChange", "update:pageInfo"]);
 
 const handleSelectChange = (value: unknown[]) => {
     emit("selectionChange", value);
+};
+const handleSizeChange = (pageSize: number) => {
+    emit("update:pageInfo", { ...props.pageInfo, pageSize });
+};
+const handleCurrentChange = (currentPage: number) => {
+    emit("update:pageInfo", { ...props.pageInfo, currentPage });
 };
 </script>
 
