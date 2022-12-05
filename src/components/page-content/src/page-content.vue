@@ -7,7 +7,7 @@
             v-model:pageInfo="pageInfo"
         >
             <template #headerHandler>
-                <el-button>新建用户</el-button>
+                <el-button v-if="isCreate">新建用户</el-button>
                 <el-button :icon="Refresh" type="primary"></el-button>
             </template>
             <template #enable="scope">
@@ -24,8 +24,14 @@
             <template #handler>
                 <div class="handler-btns">
                     <el-button-group class="ml-4">
-                        <el-button type="primary" :icon="Edit" size="small" plain />
-                        <el-button type="primary" :icon="Delete" size="small" plain />
+                        <el-button type="primary" :icon="Edit" size="small" plain v-if="isUpdate" />
+                        <el-button
+                            type="primary"
+                            :icon="Delete"
+                            size="small"
+                            plain
+                            v-if="isDelete"
+                        />
                     </el-button-group>
                 </div>
             </template>
@@ -46,6 +52,7 @@ import LinTable from "@/base-ui/table";
 import { useStore } from "@/store";
 import { Delete, Edit, Refresh } from "@element-plus/icons-vue";
 import { IGetPagePayload } from "@/store/main/system/types";
+import { usePermission } from "@/hooks/usePermission";
 
 const props = defineProps<{
     contentTableConfig: any;
@@ -54,9 +61,17 @@ const props = defineProps<{
 
 // vuex中获取数据
 const store = useStore();
+
+// 0.获取操作的权限
+const isCreate = usePermission(props.pageName, "create");
+const isUpdate = usePermission(props.pageName, "update");
+const isDelete = usePermission(props.pageName, "delete");
+const isQuery = usePermission(props.pageName, "query");
+
 // 分页数据
 const pageInfo = ref({ currentPage: 1, pageSize: 10 });
 const getPageData = (queryInfo: any = {}) => {
+    if (!isQuery) return;
     store.dispatch<IGetPagePayload>({
         type: "system/getPageListAction",
         pageName: props.pageName,

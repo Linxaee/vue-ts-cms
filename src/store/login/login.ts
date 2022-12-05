@@ -1,9 +1,13 @@
 import { Module } from "vuex";
 import { ILoginState } from "./types";
 import { IRootState } from "../types";
-import { accountLoginRequest, requestUserInfoById, requestUserMenuById } from "@/service/login/login";
+import {
+    accountLoginRequest,
+    requestUserInfoById,
+    requestUserMenuById
+} from "@/service/login/login";
 import { IAccount, IUserInfo, ITopMenuInfo } from "@/service/login/types";
-import { mapMenusToRoutes } from "@/utils/mapMenus";
+import { mapMenusToPermissions, mapMenusToRoutes } from "@/utils/mapMenus";
 import LocalCache from "@/utils/cache";
 import router from "@/router";
 
@@ -19,7 +23,8 @@ const loginModule: Module<ILoginState, IRootState> = {
         return {
             token: "",
             userInfo: undefined,
-            userMenus: []
+            userMenus: [],
+            permissions: []
         };
     },
     getters: {},
@@ -37,6 +42,10 @@ const loginModule: Module<ILoginState, IRootState> = {
             routes.forEach((route) => {
                 router.addRoute("main", route);
             });
+
+            // 获取用户按钮的权限
+            const permissions = mapMenusToPermissions(userMenus);
+            state.permissions = permissions;
         }
     },
     actions: {
