@@ -15,13 +15,10 @@
             border
             style="width: 100%"
             @selection-change="handleSelectChange"
+            v-bind="childrenProps"
         >
-            <el-table-column
-                v-if="showSelectColumn"
-                align="center"
-                type="selection"
-                width="80"
-            ></el-table-column>
+            <el-table-column v-if="showSelectColumn" align="center" type="selection" width="80">
+            </el-table-column>
             <el-table-column
                 v-if="showIndexColumn"
                 label="序号"
@@ -30,7 +27,7 @@
                 width="80"
             ></el-table-column>
             <template v-for="propItem in propList" :key="propItem.prop">
-                <el-table-column v-bind="propItem" align="center">
+                <el-table-column v-bind="propItem" align="center" show-overflow-tooltip>
                     <template #default="scope">
                         <slot :name="propItem.slotName ?? propItem.prop" :row="scope.row">
                             {{ propItem.prop ? scope.row[propItem.prop] : "" }}
@@ -45,11 +42,8 @@
                     v-model:current-page="pageInfo.currentPage"
                     v-model:page-size="pageInfo.pageSize"
                     :page-sizes="[10, 20, 30]"
-                    :small="small"
-                    :disabled="disabled"
-                    :background="background"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :total="listCount"
+                    :total="listCount || listData.length"
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
             /></slot>
@@ -69,6 +63,8 @@ const props = withDefaults(
         title?: string;
         listCount: number;
         pageInfo?: IPageInfo;
+        childrenProps?: object;
+        showFooter: boolean;
     }>(),
     {
         showIndexColumn: true,

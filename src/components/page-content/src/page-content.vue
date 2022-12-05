@@ -29,12 +29,18 @@
                     </el-button-group>
                 </div>
             </template>
+
+            <template v-for="item in otherPropSlots" :key="item.prop" #[item.slotName]="scope">
+                <template v-if="item.slotName">
+                    <slot :name="item.slotName" :row="scope.row"></slot>
+                </template>
+            </template>
         </LinTable>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, defineExpose, ref, watch } from "vue";
+import { computed, defineExpose, ref, watchEffect } from "vue";
 
 import LinTable from "@/base-ui/table";
 import { useStore } from "@/store";
@@ -48,6 +54,7 @@ const props = defineProps<{
 
 // vuex中获取数据
 const store = useStore();
+// 分页数据
 const pageInfo = ref({ currentPage: 1, pageSize: 10 });
 const getPageData = (queryInfo: any = {}) => {
     store.dispatch<IGetPagePayload>({
@@ -61,11 +68,21 @@ const getPageData = (queryInfo: any = {}) => {
     });
 };
 
-watch(pageInfo, () => getPageData());
-getPageData();
+// 监听pageInfo，动态请求数据
+watchEffect(() => getPageData());
 
+// 初始化数据
 const dataList = computed(() => store.getters[`system/pageListData`](props.pageName));
 const dataCount = computed(() => store.getters[`system/pageListCount`](props.pageName));
+
+// 4.获取其他的动态插槽名称
+const otherPropSlots = props.contentTableConfig?.propList.filter((item: any) => {
+    if (item.slotName === "status") return false;
+    if (item.slotName === "createAt") return false;
+    if (item.slotName === "updateAt") return false;
+    if (item.slotName === "handler") return false;
+    return true;
+});
 
 defineExpose({
     getPageData
