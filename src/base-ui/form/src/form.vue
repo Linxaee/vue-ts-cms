@@ -90,6 +90,8 @@ const formData = ref({ ...props.modelValue });
 watch(
     formData,
     (newValue) => {
+        console.log(newValue);
+
         emit("update:modelValue", newValue);
     },
     { deep: true }

@@ -10,6 +10,7 @@ export interface IFormItem {
     options?: IOptions[];
     // 针对特殊的属性
     otherOptions?: any;
+    isHidden?: boolean;
 }
 export interface IOptions {
     value: string | number;
@@ -32,4 +33,5 @@ export interface IFormConfig {
     labelWidth?: string;
     colLayout?: LinOptional<IColLayout>;
     itemLayout?: any;
+    itemStyle?: any;
 }

@@ -64,7 +64,7 @@ const props = withDefaults(
         listCount: number;
         pageInfo?: IPageInfo;
         childrenProps?: object;
-        showFooter: boolean;
+        showFooter?: boolean;
     }>(),
     {
         showIndexColumn: true,

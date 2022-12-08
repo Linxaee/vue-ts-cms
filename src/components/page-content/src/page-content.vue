@@ -7,7 +7,7 @@
             v-model:pageInfo="pageInfo"
         >
             <template #headerHandler>
-                <el-button v-if="isCreate">新建用户</el-button>
+                <el-button v-if="isCreate" @click="handleNewClick">新建用户</el-button>
                 <el-button :icon="Refresh" type="primary"></el-button>
             </template>
             <template #enable="scope">
@@ -21,21 +21,28 @@
             <template #updateAt="scope">
                 <span v-format-time="'YYYY/MM/DD HH:MM'"> {{ scope.row.updateAt }}</span>
             </template>
-            <template #handler>
+            <template #handler="scope">
                 <div class="handler-btns">
                     <el-button-group class="ml-4">
-                        <el-button type="primary" :icon="Edit" size="small" plain v-if="isUpdate" />
+                        <el-button
+                            type="primary"
+                            :icon="Edit"
+                            size="small"
+                            plain
+                            v-if="isUpdate"
+                            @click="handleEditClick(scope.row)"
+                        />
                         <el-button
                             type="primary"
                             :icon="Delete"
                             size="small"
                             plain
                             v-if="isDelete"
+                            @click="handleDeleteClick(scope.row)"
                         />
                     </el-button-group>
                 </div>
             </template>
-
             <template v-for="item in otherPropSlots" :key="item.prop" #[item.slotName]="scope">
                 <template v-if="item.slotName">
                     <slot :name="item.slotName" :row="scope.row"></slot>
@@ -46,7 +53,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineExpose, ref, watchEffect } from "vue";
+import { computed, defineExpose, ref, watchEffect, defineEmits } from "vue";
 
 import LinTable from "@/base-ui/table";
 import { useStore } from "@/store";
@@ -54,11 +61,12 @@ import { Delete, Edit, Refresh } from "@element-plus/icons-vue";
 import { IGetPagePayload } from "@/store/main/system/types";
 import { usePermission } from "@/hooks/usePermission";
 
+const emit = defineEmits(["newBtnClick", "editBtnClick"]);
+
 const props = defineProps<{
     contentTableConfig: any;
     pageName: string;
 }>();
-
 // vuex中获取数据
 const store = useStore();
 
@@ -98,6 +106,21 @@ const otherPropSlots = props.contentTableConfig?.propList.filter((item: any) => 
     if (item.slotName === "handler") return false;
     return true;
 });
+
+// 5.删除/编辑/新建操作
+const handleDeleteClick = (item: any) => {
+    console.log(item);
+    store.dispatch("system/deletePageDataAction", {
+        pageName: props.pageName,
+        id: item.id
+    });
+};
+const handleNewClick = () => {
+    emit("newBtnClick");
+};
+const handleEditClick = (item: any) => {
+    emit("editBtnClick", item);
+};
 
 defineExpose({
     getPageData

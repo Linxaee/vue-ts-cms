@@ -1,6 +1,6 @@
 <template>
     <div class="page-search">
-        <lin-form v-bind="searchFormConfig" v-model="formData">
+        <LinForm v-bind="searchFormConfig" v-model="formData">
             <template #title>
                 <h1>高级检索</h1>
             </template>
@@ -8,7 +8,7 @@
                 <el-button @click="handleResetClick">重置</el-button>
                 <el-button type="primary" @click="handleQueryClick">搜索</el-button>
             </template>
-        </lin-form>
+        </LinForm>
     </div>
 </template>
 

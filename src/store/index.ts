@@ -6,8 +6,18 @@ const store = createStore<IRootState>({
     state: () => {
         return {
             name: "Linxae",
-            age: 18
+            age: 18,
+            entireDepartment: [],
+            entireRole: []
         };
+    },
+    mutations: {
+        changeEntireDepartment(state, list) {
+            state.entireDepartment = list;
+        },
+        changeEntireRole(state, list) {
+            state.entireRole = list;
+        }
     },
     modules: { login, system }
 });
